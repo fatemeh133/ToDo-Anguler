@@ -17,6 +17,8 @@
             class="form-control drop-shadow"
             required
             ngModel
+            (drop)="onDrop($event)"
+            (dragover)="onDragOver($event)"
           />
         </div>
         <div class="col-md-2">
@@ -33,7 +35,12 @@
 </div>
 
 <div class="row categories-list">
-  <div class="col-md-3" *ngFor="let category of categories">
+  <div
+    class="col-md-3"
+    *ngFor="let category of categories"
+    draggable="true"
+    (dragstart)="onDragStart($event, category.id!)"
+  >
     <div
       class="card drop-shadow"
       [style.border-left-color]="category.colorCode"

@@ -24,4 +24,17 @@ export class CategoryComponent implements OnInit {
     this.categoryService.addCategories(form.value.categoryName);
     form.reset();
   }
+  onDragStart(event: DragEvent, id: string) {
+    console.log(event);
+    event.dataTransfer?.setData('text/plain', id);
+  }
+
+  onDragOver(event: Event) {
+    event.preventDefault();
+  }
+
+  onDrop(event: DragEvent) {
+    const data = event.dataTransfer?.getData('text/plain');
+    console.log('drop......', data);
+  }
 }
