@@ -29,4 +29,30 @@ export class CategoryService {
         })
       );
   }
+
+  addCategories(categoryName: string) {
+    let newCategory: CategoryModel = {
+      category: categoryName,
+      colorCode: this.generateColor(),
+      todoCount: 0,
+    };
+    this.fireService.collection('todos').add(newCategory);
+  }
+
+  private generateColor() {
+    const colorArray = [
+      '#eb8634',
+      '#d3eb34',
+      '#34eb89',
+      '#34e8eb',
+      '#346eeb',
+      '#6834eb',
+      '#eb344c',
+      '#eb3434',
+      '#ff9169',
+      '#697aff',
+    ];
+    const randomNumber = Math.floor(Math.random() * colorArray.length);
+    return colorArray[randomNumber];
+  }
 }

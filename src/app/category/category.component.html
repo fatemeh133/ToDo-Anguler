@@ -1,22 +1,22 @@
 <div class="row justify-content-center md-3">
   <div class="col-md-4 text-center">
     <h1>وظایف - TODOS</h1>
-    <p class="text-info">
-      اینجا میتونید وظایف و کارهاتون رو اضافه و مدیریت کنید
-    </p>
+    <p class="text-info">دسته بندی رو اضافه و مدیریت کنید</p>
   </div>
 </div>
 
 <div class="row">
   <div class="col-md-12">
-    <form class="form-inline">
+    <form class="form-inline" #form="ngForm" (ngSubmit)="onsubmit(form)">
       <div class="row">
         <div class="col-md-10 form-group">
           <input
             type="text"
-            placeholder="وظایف خودتون رو اینجا اضاف کنید..."
-            name="todoText"
+            placeholder="نام دسته بندی رو اینجا اضاف کنید..."
+            name="categoryName"
             class="form-control drop-shadow"
+            required
+            ngModel
           />
         </div>
         <div class="col-md-2">
