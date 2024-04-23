@@ -12,6 +12,9 @@ export class CategoryComponent implements OnInit {
   constructor(private categoryService: CategoryService) {}
 
   categories: Array<CategoryModel> = [];
+  categoryName: string = '';
+  categoryId: string = '';
+  ispost: boolean = true;
 
   ngOnInit() {
     this.categoryService.fetchCategories().subscribe((category) => {
@@ -21,7 +24,14 @@ export class CategoryComponent implements OnInit {
   }
 
   onsubmit(form: NgForm) {
-    this.categoryService.addCategories(form.value.categoryName);
+    const catName = form.value.categoryName;
+    if (this.ispost) {
+      this.categoryService.addCategories(catName);
+    } else {
+      this.categoryService.editCategory(this.categoryId, catName);
+      this.ispost = true;
+    }
+
     form.reset();
   }
   onDragStart(event: DragEvent, id: string) {
@@ -34,7 +44,18 @@ export class CategoryComponent implements OnInit {
   }
 
   onDrop(event: DragEvent) {
-    const data = event.dataTransfer?.getData('text/plain');
-    console.log('drop......', data);
+    const catId = event.dataTransfer?.getData('text/plain');
+    const cName = this.categories.filter((categ) => {
+      return categ.id === catId;
+    });
+    this.categoryName = cName[0].category;
+    this.categoryId = catId!;
+
+    console.log(cName[0].category);
+    this.ispost = false;
+  }
+
+  onDelete(categoryId: string) {
+    this.categoryService.deleteCategory(categoryId);
   }
 }

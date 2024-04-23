@@ -19,14 +19,17 @@
             ngModel
             (drop)="onDrop($event)"
             (dragover)="onDragOver($event)"
+            [(ngModel)]="categoryName"
+            [ngClass]="form.invalid && form.touched ? 'invalid' : ''"
           />
         </div>
         <div class="col-md-2">
           <button
             type="submit"
             class="btn btn-primary col-md-2 btn-todo btn-block drop-shadow"
+            [disabled]="form.invalid"
           >
-            افزودن
+            {{ ispost == true ? " افزودن" : "ویرایش" }}
           </button>
         </div>
       </div>
@@ -49,11 +52,16 @@
         <div class="clearfix">
           <div class="float-left"></div>
           <div class="float-right cat-tools">
-            <small><i class="fas fa-trash text-danger"></i></small>
+            <small
+              ><i
+                class="fas fa-trash text-danger"
+                (click)="onDelete(category.id!)"
+              ></i
+            ></small>
           </div>
         </div>
 
-        <div class="todo-content">
+        <div class="todo-content" [routerLink]="['/todo', category.id]">
           <h3 [style.color]="category.colorCode">
             {{ category.category }}
           </h3>

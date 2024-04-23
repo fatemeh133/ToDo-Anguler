@@ -6,7 +6,7 @@ import { IndexComponent } from './index/index.component';
 const routes: Routes = [
   { path: '', component: CategoryComponent },
   {
-    path: 'todo',
+    path: 'todo/:id',
     component: IndexComponent,
   },
 ];
