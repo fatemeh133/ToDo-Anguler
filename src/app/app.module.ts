@@ -12,6 +12,10 @@ import { AngularFireModule } from '@angular/fire/compat';
 import { environment } from './environment';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule, ToastrService } from 'ngx-toastr';
+import { CategoryService } from './services/category.service';
+import { TodoService } from './services/todo.service';
 
 @NgModule({
   declarations: [
@@ -28,6 +32,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     AngularFirestoreModule,
     FormsModule,
     ReactiveFormsModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot(),
   ],
   providers: [],
   bootstrap: [AppComponent],

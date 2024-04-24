@@ -2,12 +2,16 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { map, Observable } from 'rxjs';
 import { CategoryModel } from '../models/category.model';
+import { ToatserService } from './toatser.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CategoryService {
-  constructor(private fireService: AngularFirestore) {}
+  constructor(
+    private fireService: AngularFirestore,
+    private toaster: ToatserService
+  ) {}
 
   fetchCategories(): Observable<CategoryModel[]> {
     return this.fireService
@@ -36,17 +40,39 @@ export class CategoryService {
       colorCode: this.generateColor(),
       todoCount: 0,
     };
-    this.fireService.collection('todos').add(newCategory);
+    this.fireService
+      .collection('todos')
+      .add(newCategory)
+      .then(() => {
+        this.toaster.showSuccess('ارسال اطلاعات موفقیت آمیز بود', 'موفق');
+      })
+      .catch((err) => {
+        this.toaster.showSuccess(err, 'خطا');
+      });
   }
 
   editCategory(categoryId: string, categoryName: string) {
     this.fireService
       .doc('todos/' + categoryId)
-      .update({ category: categoryName });
+      .update({ category: categoryName })
+      .then(() => {
+        this.toaster.showSuccess('ویرایش اطلاعات موفقیت آمیز بود', 'موفق');
+      })
+      .catch((err) => {
+        this.toaster.showSuccess(err, 'خطا');
+      });
   }
 
   deleteCategory(categoryId: string) {
-    this.fireService.doc('todos/' + categoryId).delete();
+    this.fireService
+      .doc('todos/' + categoryId)
+      .delete()
+      .then(() => {
+        this.toaster.showSuccess('حذف اطلاعات موفقیت آمیز بود', 'موفق');
+      })
+      .catch((err) => {
+        this.toaster.showSuccess(err, 'خطا');
+      });
   }
 
   private generateColor() {
