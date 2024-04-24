@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { CategoryComponent } from '../category/category.component';
 import { TodoService } from '../services/todo.service';
+import { TodoModel } from '../models/todo.model';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-index',
@@ -10,7 +11,10 @@ import { TodoService } from '../services/todo.service';
 })
 export class IndexComponent implements OnInit {
   categoryId = '';
-  todos: Array<any> = [];
+  todoName: string = '';
+  todos: Array<TodoModel> = [];
+  ispost: boolean = true;
+  todoId: string = '';
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -23,6 +27,37 @@ export class IndexComponent implements OnInit {
       this.todos = todos;
       console.log(this.todos);
     });
-    alert(this.categoryId);
+  }
+
+  onsubmit(form: NgForm) {
+    const todoName = form.value.todoName;
+
+    if (this.ispost) {
+      this.todoService.addTodo(todoName, this.categoryId);
+    } else {
+      this.todoService.editTodo(this.categoryId, this.todoId, todoName);
+      this.ispost = true;
+    }
+
+    form.reset();
+  }
+
+  onDelete(todoId: string, categoryId: string) {
+    this.todoService.deleteTodo(todoId, categoryId);
+  }
+
+  onUpdate(todoId: string, todoTitle: string) {
+    this.todoId = todoId;
+    this.todoName = todoTitle;
+    this.ispost = false;
+  }
+
+  compeleteTodo(todoId: string) {
+    this.todoService.markCompelete(this.categoryId, todoId);
+    
+  }
+
+  uncompeleteTodo(todoId: string) {
+    this.todoService.markUncompelete(this.categoryId, todoId);
   }
 }
